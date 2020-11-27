@@ -8,7 +8,18 @@ RoboFace::RoboFace(int xRightEyePin, int yRightEyePin, int xLeftEyePin, int yLef
     this->neck = Neck(pinRoll, pinYaw);
 }
 
-void ReadSerialInstruction(String line)
+void RoboFace::ReadSerialInstruction(String line)
 {
 
+}
+
+void RoboFace::SendBoundaries()
+{
+    String msg = "\n";
+    msg += "RightEye " + this->rightEye.BoundsToString();
+    msg += "LeftEye " + this->leftEye.BoundsToString();
+    msg += "Mouth " + this->mouth.BoundsToString();
+    msg += "Neck " + this->neck.BoundsToString();
+
+    Serial.print(msg);
 }

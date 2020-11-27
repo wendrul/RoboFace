@@ -20,8 +20,9 @@ public:
     void SetPosition(float x, float y);
     void SetBoundaries(float xBoundMin, float xBoundMax, float yBoundMin, float yBoundMax);
     void UpdatePos();
-    float getX();
-    float getY();
+    float GetX();
+    float GetY();
+    String BoundsToString();
 };
 
 class Mouth
@@ -37,6 +38,7 @@ public:
     void SetBoundaries(float min, float max);
     void UpdatePos();
     float GetPos();
+    String BoundsToString();
 };
 
 class Neck
@@ -56,6 +58,7 @@ public:
     void Update();
     float GetRoll();
     float GetYaw();
+    String BoundsToString();
 };
 
 class RoboFace
@@ -68,6 +71,7 @@ public:
     Neck neck; 
     RoboFace(int xRightEyePin, int yRightEyePin, int xLeftEyePin, int yLeftEyePin, int mouthPin, int pinRoll, int pinYaw);
     void ReadSerialInstruction(String line);
+    void SendBoundaries();
 };
 
 #endif

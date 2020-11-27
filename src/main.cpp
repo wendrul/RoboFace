@@ -19,10 +19,14 @@ Servo eye1x;
 Servo eye2x;
 int    chooseAxis;
 bool    pressed;
+float     pot;
 
 void setup()
 {
+    Serial.begin(9600);
     RoboFace face = RoboFace(0, 0, 0, 0, 0, 0, 0);
+    face.SendBoundaries();
+    while(1);
     pressed = true;
     chooseAxis = 0;
     pinMode(A0, INPUT);
@@ -36,12 +40,14 @@ void setup()
         while(1){}
     }
     Serial.begin(9600);
+    pot = 0;
 }
 
 void loop()
 {
     if (digitalRead(4) == HIGH)
     {
+        Serial.println(__cplusplus);
         if (!pressed)
         {
             chooseAxis = (chooseAxis + 1) % 2;
@@ -55,14 +61,15 @@ void loop()
             Serial.println("Release");
         pressed = false;
     }
-    float t = (float)analogRead(A0) / 1024.;    
-    if (!pressed && chooseAxis == 0)
+    float t = (float)analogRead(A0);    
+    if (abs(t - pot) > 3)
     {
-        eye1x.write(180 * t);
+        if (t < 30)
+            t = 0;
+        if (t> 1000)
+            t = 1024;
+        eye2x.write(180. * (t/1024.));
+        pot = t;
+        Serial.println((pot / 1024.) * 180.);
     }
-    else if (chooseAxis == 1)
-    {
-        eye2x.write(180 * t);
-    }
-    //Serial.println(180 * t);
 }

@@ -32,12 +32,25 @@ void Eye::UpdatePos()
     this->yServo.write(this->y);
 }
 
-float Eye::getX()
+String Eye::BoundsToString()
+{
+    String str = "";
+    str += "x: ";
+    str += String(this->xBoundaries.min) + " ";
+    str += String(this->xBoundaries.max) + " ";
+    str += "y: ";
+    str += String(this->yBoundaries.min) + " ";
+    str += String(this->yBoundaries.max) + "\n";
+
+    return str;
+}
+
+float Eye::GetX()
 {
     return x;
 }
 
-float Eye::getY()
+float Eye::GetY()
 {
     return y;
 }
