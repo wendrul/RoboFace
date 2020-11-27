@@ -41,3 +41,10 @@ class RoboFace:
         self.leftEye = Eye()
         self.mouth = Mouth()
         self.neck = Neck()
+    def Serialize(self):
+        msg = ""
+        msg += f"RE {face.rightEye.x} {face.rightEye.y}\n"
+        msg += f"LE {face.leftEye.x} {face.leftEye.y}\n"
+        msg += f"M {face.mouth.pos}\n"
+        msg += f"N {face.neck.roll} {face.neck.yaw}\n"
+        return msg

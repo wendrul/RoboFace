@@ -33,12 +33,7 @@ class RoboSerialInterface:
                 face.neck.maxYaw = float(line[6])
         return face
     def SendStatus(self, face : RoboFace):
-        msg = ""
-        msg += f"RE {face.rightEye.x} {face.rightEye.y}\n"
-        msg += f"LE {face.leftEye.x} {face.leftEye.y}\n"
-        msg += f"M {face.mouth.pos}\n"
-        msg += f"N {face.neck.roll} {face.neck.yaw}\n"
-        self.ser.write(msg)
+        self.ser.write(face.Serialize())
     def OpenConnection(self):
         self.ser.open()
     def CloseConnection(self):
