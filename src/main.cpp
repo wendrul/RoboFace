@@ -1,75 +1,63 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include "robobody.h"
+#include "bounds_pins.h"
 
-#define A 30
-#define OMEGA 5
-#define INITIAL_ANGLE 72
-#define SET_ZERO 0
 
-#define X_RIGHT_EYE_PIN 0
-#define Y_RIGHT_EYE_PIN 0
-#define X_LEFT_EYE_PIN 0
-#define Y_LEFT_EYE_PIN 0
-#define MOUTH_PIN 0
-#define ROLL_NECK_PIN 0
-#define YAW_NECK_PIN 0
-
-Servo eye1x;
-Servo eye2x;
-int    chooseAxis;
-bool    pressed;
-float     pot;
+/*RoboFace     face = RoboFace(X_RIGHT_EYE_PIN, Y_RIGHT_EYE_PIN, 
+                    X_LEFT_EYE_PIN, Y_LEFT_EYE_PIN,
+                    MOUTH_PIN,
+                    ROLL_NECK_PIN, YAW_NECK_PIN);*/
+RoboFace face;
+char buf[1024];
+int cur = 0;
 
 void setup()
 {
     Serial.begin(9600);
-    RoboFace face = RoboFace(0, 0, 0, 0, 0, 0, 0);
-    face.SendBoundaries();
-    while(1);
-    pressed = true;
-    chooseAxis = 0;
-    pinMode(A0, INPUT);
-    pinMode(4, INPUT);
-    eye1x.attach(3);
-    eye2x.attach(5);
-    if (SET_ZERO)
-    {
-        eye2x.write(INITIAL_ANGLE);
-        eye1x.write(INITIAL_ANGLE);
-        while(1){}
-    }
-    Serial.begin(9600);
-    pot = 0;
+
+    face = RoboFace(X_RIGHT_EYE_PIN, Y_RIGHT_EYE_PIN, 
+                    X_LEFT_EYE_PIN, Y_LEFT_EYE_PIN,
+                    MOUTH_PIN,
+                    ROLL_NECK_PIN, YAW_NECK_PIN);
+    face.rightEye.SetBoundaries(RIGHT_EYE_X_BOUND_MIN, RIGHT_EYE_X_BOUND_MAX,
+                                RIGHT_EYE_Y_BOUND_MIN, RIGHT_EYE_Y_BOUND_MAX);
+    face.leftEye.SetBoundaries(LEFT_EYE_X_BOUND_MIN, LEFT_EYE_Y_BOUND_MAX,
+                                LEFT_EYE_Y_BOUND_MIN, LEFT_EYE_Y_BOUND_MAX);
+    face.mouth.SetBoundaries(MOUTH_BOUND_MIN, MOUTH_BOUND_MAX);
+    face.neck.SetBoundaries(ROLL_BOUND_MIN, ROLL_BOUND_MAX,
+                            YAW_BOUND_MIN, YAW_BOUND_MAX);   
+}
+
+void UpdatePos()
+{
+    face.rightEye.UpdatePos();
+    face.leftEye.UpdatePos();
+    face.mouth.UpdatePos();
+    face.neck.UpdatePos();
+}
+
+void ClearBuf()
+{
+    cur = 0;
+    buf[0] = '\0';
 }
 
 void loop()
 {
-    if (digitalRead(4) == HIGH)
+    UpdatePos();
+    if(Serial.available())
     {
-        Serial.println(__cplusplus);
-        if (!pressed)
+        int i = cur;
+        cur += Serial.readBytesUntil('\n', buf + cur, 1023 - cur);
+        buf[cur] = '\0';
+        Serial.println(buf + i);
+        if (buf[cur - 1] == '\r')
         {
-            chooseAxis = (chooseAxis + 1) % 2;
-            Serial.println("Pressed");
+            Serial.println(buf);
+            face.ReadSerialInstruction(buf);
+            ClearBuf();
+            UpdatePos();
         }
-        pressed = true;
-    }
-    else
-    {
-        if (pressed)
-            Serial.println("Release");
-        pressed = false;
-    }
-    float t = (float)analogRead(A0);    
-    if (abs(t - pot) > 3)
-    {
-        if (t < 30)
-            t = 0;
-        if (t> 1000)
-            t = 1024;
-        eye2x.write(180. * (t/1024.));
-        pot = t;
-        Serial.println((pot / 1024.) * 180.);
     }
 }

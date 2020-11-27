@@ -8,7 +8,8 @@ class RoboSerialInterface:
         self.ser.port = 'COM4'
     def ReadBounds(self, face : RoboFace) -> RoboFace:
         self.ser.write("ask bounds")
-        boundsLines = self.ser.readlines()
+        boundsLines = self.ser.read_all()
+        boundsLines = str(boundsLines).split('\n')
         if (len(boundsLines) < 4):
             raise Exception("Failed to read Boundaries from Serial")
         while line in boundsLines:

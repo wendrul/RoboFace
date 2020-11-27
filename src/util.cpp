@@ -1,6 +1,7 @@
 #include "util.h"
+#include <string.h>
 
-float fClamp(float x, float min, float max)
+float   fClamp(float x, float min, float max)
 {
     if (x < min)
     {
@@ -13,7 +14,19 @@ float fClamp(float x, float min, float max)
     return x;    
 }
 
-float fClamp(float x, fboundaries_t boundaries)
+float   fClamp(float x, fboundaries_t boundaries)
 {
     return (fClamp(x, boundaries.min, boundaries.max));
+}
+
+bool    name_cmp(char *word, char *text)
+{
+    int n = strlen(word);
+    return strncmp(word, text, n) == 0;
+}
+
+void    next_arg(char **line)
+{
+    while (**line != ' ') (*line)++;
+    while (**line == ' ') (*line)++;
 }

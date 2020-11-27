@@ -4,18 +4,18 @@ Eye::Eye(int pinX, int pinY)
 {
     this->xServo.attach(pinX);
     this->yServo.attach(pinY);
-    this->SetPosition(0, 0);
-    this->xBoundaries.max = 180;
-    this->xBoundaries.min = 0;
-    this->xBoundaries.max = 180;
-    this->xBoundaries.min = 0;
+    this->SetPosition(90., 90.);
+    this->xBoundaries.max = 180.;
+    this->xBoundaries.min = 0.;
+    this->xBoundaries.max = 180.;
+    this->xBoundaries.min = 0.;
 
 }
 
 void Eye::SetPosition(float x, float y)
 {
     this->x = fClamp(x, this->xBoundaries);
-    this->x = fClamp(y, this->yBoundaries);
+    this->y = fClamp(y, this->yBoundaries);
 }
 
 void Eye::SetBoundaries(float xBoundMin, float xBoundMax, float yBoundMin, float yBoundMax)
