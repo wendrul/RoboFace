@@ -4,6 +4,11 @@ from gaze_tracking import GazeTracking
 import cv2
 
 
+minH = 0.278
+maxH = 0.886
+minV = -1.09
+maxV = -0.378
+
 def mean(L):
     S = 0
     for x in L:
@@ -32,14 +37,16 @@ def loop(face: RoboFace, gaze: GazeTracking, webcam: cv2.VideoCapture, com: Robo
     h, v = gaze.horizontal_ratio(), gaze.vertical_ratio()
     if (not(h == None or v == None)):
         hs.append(h)
-        vs.append(v)
+        vs.append(-v)
     else:
         if (len(hs) > 0):
             hs.pop(0)
             vs.pop(0)
     if (len(hs) > mov_mean):
-        face.rightEye.SetPosFromRange(mean(hs), mean(vs))
-        face.leftEye.SetPosFromRange(mean(hs), mean(vs))
+        tempH = (mean(hs) - minH) / (maxH - minH)
+        tempV = (mean(vs) - minV) / (maxV - minV)
+        face.rightEye.SetPosFromRange(tempH, 1 - tempV)
+        face.leftEye.SetPosFromRange(tempH, tempV)
         hs.pop(0)
         vs.pop(0)
         com.SendStatus(face)
