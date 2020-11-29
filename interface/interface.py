@@ -1,19 +1,22 @@
-import serial
-from roboface import *
+import serial, time
+from roboface import RoboFace
+
 
 class RoboSerialInterface:
-    def __init__(self):
-        self.ser = serial.Serial()
-        self.ser.baudrate = 9600
-        self.ser.port = 'COM4'
-    def ReadBounds(self, face : RoboFace) -> RoboFace:
-        self.ser.write("ask bounds")
-        boundsLines = self.ser.read_all()
-        boundsLines = str(boundsLines).split('\n')
+    def __init__(self, baudrate=9600, port='COM4', timeout = 1):
+        self.ser = serial.Serial(port, baudrate, timeout=timeout, write_timeout=timeout)
+        time.sleep(3)
+    def ReadBounds(self, face: RoboFace) -> RoboFace:
+        self.ser.write(b'ask bound\n')
+        boundsLines = []
+        while (len(boundsLines) < 6):
+            line = self.ser.readline().decode()
+            if (line):
+                boundsLines.append(line)
         if (len(boundsLines) < 4):
             raise Exception("Failed to read Boundaries from Serial")
-        while line in boundsLines:
-            line = str(line).split(' ')
+        for lineRaw in boundsLines:
+            line = str(lineRaw).split(' ')
             if (line[0] == "RightEye"):
                 face.rightEye.xMin = float(line[2])
                 face.rightEye.xMax = float(line[3])
@@ -33,16 +36,9 @@ class RoboSerialInterface:
                 face.neck.minYaw = float(line[5])
                 face.neck.maxYaw = float(line[6])
         return face
-    def SendStatus(self, face : RoboFace):
-        self.ser.write(face.Serialize())
-    def OpenConnection(self):
-        self.ser.open()
+
+    def SendStatus(self, face: RoboFace):
+        self.ser.write(face.Serialize().encode())
+
     def CloseConnection(self):
         self.ser.close()
-    def OpenConnection(self, baudrate):
-        self.ser.baudrate = baudrate
-        self.ser.open()
-    def OpenConnection(self, baudrate, port):
-        self.ser.port = port
-        self.ser.baudrate = baudrate
-        self.ser.open()

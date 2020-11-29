@@ -14,8 +14,8 @@ int cur = 0;
 
 void setup()
 {
-    Serial.begin(9600);
-
+    Serial.begin(115200);
+    pinMode(7, OUTPUT);
     face = new RoboFace(X_RIGHT_EYE_PIN, Y_RIGHT_EYE_PIN, 
                     X_LEFT_EYE_PIN, Y_LEFT_EYE_PIN,
                     MOUTH_PIN,
@@ -45,19 +45,21 @@ void ClearBuf()
 
 void loop()
 {
-    UpdatePos();
     if(Serial.available())
     {
-        int i = cur;
-        cur += Serial.readBytesUntil('\n', buf + cur, 1023 - cur);
+        digitalWrite(7, HIGH);
+        buf[cur] = Serial.read();
+        if (buf[cur] != -1)
+            cur++;
         buf[cur] = '\0';
-        Serial.println(buf + i);
-        if (buf[cur - 1] == '\r')
+        //Serial.print(buf[cur - 1]); //debug
+        if (buf[cur - 1] == '\n' || buf[cur - 1] == '\r')
         {
-            Serial.println(buf);
+            digitalWrite(7, LOW);
             face->ReadSerialInstruction(buf);
             ClearBuf();
             UpdatePos();
         }
     }
+    
 }
