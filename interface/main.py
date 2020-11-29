@@ -28,7 +28,7 @@ def setup():
 
 
 hs, vs = [], []
-mov_mean = 1
+mov_mean = 5
 
 
 def loop(face: RoboFace, gaze: GazeTracking, webcam: cv2.VideoCapture, com: RoboSerialInterface):
@@ -45,8 +45,8 @@ def loop(face: RoboFace, gaze: GazeTracking, webcam: cv2.VideoCapture, com: Robo
     if (len(hs) > mov_mean):
         tempH = (mean(hs) - minH) / (maxH - minH)
         tempV = (mean(vs) - minV) / (maxV - minV)
-        face.rightEye.SetPosFromRange(tempH, 1 - tempV)
-        face.leftEye.SetPosFromRange(tempH, tempV)
+        face.rightEye.SetPosFromRange(tempH, tempV)
+        face.leftEye.SetPosFromRange(tempH, 1 - tempV)
         hs.pop(0)
         vs.pop(0)
         com.SendStatus(face)
