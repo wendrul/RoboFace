@@ -1,3 +1,5 @@
+from util import mean
+
 class Eye:
     def __init__(self):
         self.x = 90
@@ -23,13 +25,19 @@ class Mouth:
         self.pos = 90
         self.minPos = 0
         self.maxPos = 180
+        self._m = 3
+        self._pos_list = []
 
     def SetBounds(self, minPos, maxPos):
         self.minPos = minPos
         self.maxPos = maxPos
 
     def SetPosFromRange(self, t):
-        self.x = (self.maxPos - self.minPos) * t + self.minPos
+        pos = (self.maxPos - self.minPos) * (1 - t) + self.minPos
+        self._pos_list.append(pos)
+        if (len(self._pos_list) > self._m):
+            self.pos = mean(self._pos_list)
+            self._pos_list.pop(0)
 
 
 class Neck:
@@ -39,7 +47,7 @@ class Neck:
         self.minRoll = 0
         self.maxRoll = 180
         self.minYaw = 0
-        self.maxRoll = 90
+        self.maxYaw = 90
 
     def SetBounds(self, minRoll, maxRoll, minYaw, maxYaw):
         self.minRoll = minRoll
@@ -48,8 +56,8 @@ class Neck:
         self.maxYaw = maxYaw
 
     def SetPosFromRange(self, troll, tyaw):
-        self.x = (self.minRoll - self.maxRoll) * troll + self.minRoll
-        self.y = (self.minYaw - self.maxYaw) * tyaw + self.minYaw
+        self.roll = (self.maxRoll - self.minRoll) * troll + self.minRoll
+        self.yaw = (self.maxYaw - self.minYaw) * tyaw + self.minYaw
 
 
 class RoboFace:

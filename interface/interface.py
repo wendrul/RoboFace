@@ -3,8 +3,10 @@ from roboface import RoboFace
 
 
 class RoboSerialInterface:
-    def __init__(self, baudrate=9600, port='COM4', timeout = 1):
+    def __init__(self, baudrate=9600, port='COM4', timeout = 2):
+        print(f"Opening connection o serial port '{port}' at baud {baudrate}...")
         self.ser = serial.Serial(port, baudrate, timeout=timeout, write_timeout=timeout)
+        print("Connection succesful")
         time.sleep(3)
     def ReadBounds(self, face: RoboFace) -> RoboFace:
         self.ser.write(b'ask bound\n')
@@ -42,3 +44,4 @@ class RoboSerialInterface:
 
     def CloseConnection(self):
         self.ser.close()
+        print("Connection Closed")
