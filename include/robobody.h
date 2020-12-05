@@ -51,8 +51,8 @@ private:
     Servo rollServo;
     Servo yawServo;
 public:
-    Neck() = default;
     Neck(int pinRoll, int pinYaw);
+    Neck() = default;
     void SetPosition(float roll, float yaw);
     void SetBoundaries(float rollMin, float rollMax, float yawMin, float yawMax);
     void UpdatePos();
@@ -65,10 +65,10 @@ class RoboFace
 {
 private:
 public:
-    Eye rightEye;
-    Eye leftEye;
-    Mouth mouth;
-    Neck neck; 
+    Eye *rightEye;
+    Eye *leftEye;
+    Mouth *mouth;
+    Neck *neck; 
     RoboFace() = default;
     RoboFace(int xRightEyePin, int yRightEyePin, int xLeftEyePin, int yLeftEyePin, int mouthPin, int pinRoll, int pinYaw);
     void ReadSerialInstruction(char *line);
