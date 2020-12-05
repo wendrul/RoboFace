@@ -9,10 +9,10 @@ int cur = 0;
 
 void UpdatePos()
 {
-    face->rightEye.UpdatePos();
-    face->leftEye.UpdatePos();
-    face->mouth.UpdatePos();
-    face->neck.UpdatePos();
+    face->rightEye->UpdatePos();
+    face->leftEye->UpdatePos();
+    face->mouth->UpdatePos();
+    face->neck->UpdatePos();
 }
 
 void setup()
@@ -23,12 +23,12 @@ void setup()
                         X_LEFT_EYE_PIN, Y_LEFT_EYE_PIN,
                         MOUTH_PIN,
                         ROLL_NECK_PIN, YAW_NECK_PIN);
-    face->rightEye.SetBoundaries(RIGHT_EYE_X_BOUND_MIN, RIGHT_EYE_X_BOUND_MAX,
+    face->rightEye->SetBoundaries(RIGHT_EYE_X_BOUND_MIN, RIGHT_EYE_X_BOUND_MAX,
                                  RIGHT_EYE_Y_BOUND_MIN, RIGHT_EYE_Y_BOUND_MAX);
-    face->leftEye.SetBoundaries(LEFT_EYE_X_BOUND_MIN, LEFT_EYE_Y_BOUND_MAX,
+    face->leftEye->SetBoundaries(LEFT_EYE_X_BOUND_MIN, LEFT_EYE_Y_BOUND_MAX,
                                 LEFT_EYE_Y_BOUND_MIN, LEFT_EYE_Y_BOUND_MAX);
-    face->mouth.SetBoundaries(MOUTH_BOUND_MIN, MOUTH_BOUND_MAX);
-    face->neck.SetBoundaries(ROLL_BOUND_MIN, ROLL_BOUND_MAX,
+    face->mouth->SetBoundaries(MOUTH_BOUND_MIN, MOUTH_BOUND_MAX);
+    face->neck->SetBoundaries(ROLL_BOUND_MIN, ROLL_BOUND_MAX,
                              YAW_BOUND_MIN, YAW_BOUND_MAX);
 }
 

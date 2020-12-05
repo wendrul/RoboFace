@@ -19,7 +19,7 @@ float   fClamp(float x, fboundaries_t boundaries)
     return (fClamp(x, boundaries.min, boundaries.max));
 }
 
-bool    name_cmp(char *word, char *text)
+bool    name_cmp(const char *word, const char *text)
 {
     int n = strlen(word);
     return strncmp(word, text, n) == 0;
