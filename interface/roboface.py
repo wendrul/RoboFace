@@ -8,6 +8,9 @@ class Eye:
         self.xMax = 180
         self.yMin = 0
         self.yMax = 180
+        self._m = 3
+        self._x_list = []
+        self._y_list = []
 
     def SetBounds(self, xMin, xMax, yMin, yMax):
         self.xMin = xMin
@@ -16,8 +19,15 @@ class Eye:
         self.yMax = yMax
 
     def SetPosFromRange(self, tx, ty):
-        self.x = (self.xMax - self.xMin) * tx + self.xMin
-        self.y = (self.yMax - self.yMin) * ty + self.yMin
+        x = (self.xMax - self.xMin) * tx + self.xMin
+        y = (self.yMax - self.yMin) * ty + self.yMin
+        self._x_list.append(x)
+        self._y_list.append(y)
+        if (len(self._x_list) > self._m):
+            self.x = mean(self._x_list)
+            self.y = mean(self._y_list)
+            self._x_list.pop(0)
+            self._y_list.pop(0)
 
 
 class Mouth:
@@ -48,6 +58,9 @@ class Neck:
         self.maxRoll = 180
         self.minYaw = 0
         self.maxYaw = 90
+        self._m = 6
+        self._roll_list = []
+        self._yaw_list = []
 
     def SetBounds(self, minRoll, maxRoll, minYaw, maxYaw):
         self.minRoll = minRoll
@@ -56,8 +69,15 @@ class Neck:
         self.maxYaw = maxYaw
 
     def SetPosFromRange(self, troll, tyaw):
-        self.roll = (self.maxRoll - self.minRoll) * troll + self.minRoll
-        self.yaw = (self.maxYaw - self.minYaw) * tyaw + self.minYaw
+        roll = (self.maxRoll - self.minRoll) * (1 - troll) + self.minRoll
+        yaw = (self.maxYaw - self.minYaw) * tyaw + self.minYaw
+        self._roll_list.append(roll)
+        self._yaw_list.append(yaw)
+        if (len(self._roll_list) > self._m):
+            self.roll = mean(self._roll_list)
+            self.yaw = mean(self._yaw_list)
+            self._roll_list.pop(0)
+            self._yaw_list.pop(0)
 
 
 class RoboFace:

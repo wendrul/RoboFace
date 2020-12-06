@@ -196,7 +196,7 @@ def main():
                     h, v = (h - rig['minH']) / (rig['maxH'] - rig['minH']
                                                 ), (v - rig['minV']) / (rig['maxV'] - rig['minV'])
                     face.rightEye.SetPosFromRange(h, v)
-                    face.leftEye.SetPosFromRange(h, v)
+                    face.leftEye.SetPosFromRange(h, 1 - v)
             else:
                 if (rigState == 0):
                     text = "Rigging eyes: after pressing 'E\n' move your eyes around naturally"
