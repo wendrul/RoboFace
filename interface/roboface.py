@@ -35,7 +35,7 @@ class Mouth:
         self.pos = 90
         self.minPos = 0
         self.maxPos = 180
-        self._m = 3
+        self._m = 1
         self._pos_list = []
 
     def SetBounds(self, minPos, maxPos):

@@ -19,8 +19,8 @@
 # define LEFT_EYE_Y_BOUND_MAX 117
 # define MOUTH_BOUND_MIN 75
 # define MOUTH_BOUND_MAX 150
-# define ROLL_BOUND_MIN 85
-# define ROLL_BOUND_MAX 111
+# define ROLL_BOUND_MIN 55
+# define ROLL_BOUND_MAX 100
 # define YAW_BOUND_MIN 40
 # define YAW_BOUND_MAX 140
 

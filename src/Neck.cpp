@@ -4,7 +4,7 @@ Neck::Neck(int pinRoll, int pinYaw)
 {
     this->rollServo.attach(pinRoll);
     this->yawServo.attach(pinYaw);
-    this->SetPosition(90, 90);
+    this->SetPosition(70, 90);
     this->rollBound.min = 0;
     this->yawBound.min = 0;
     this->rollBound.max = 180;
