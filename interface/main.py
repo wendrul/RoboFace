@@ -188,7 +188,8 @@ def main():
             roll, yaw = roll[0], yaw[0]
 
             if (not(args.rig)):
-                face.mouth.SetPosFromRange(mar)
+                marr = (mar - rig['minM']) / (rig['maxM'] - rig['minM'])
+                face.mouth.SetPosFromRange(marr)
                 roll, yaw = (roll - rig['minR']) / (rig['maxR'] - rig['minR']
                                                     ), (yaw - rig['minY']) / (rig['maxY'] - rig['minY'])
                 face.neck.SetPosFromRange(roll, yaw)
@@ -276,7 +277,7 @@ def main():
         FPS = int(1/(np.mean(ts[-10:])+1e-6))
 
         if args.debug:
-            draw_FPS(frame, FPS)
+            #draw_FPS(frame, FPS)
             cv2.imshow("face", frame)
             if keyPressed == ord('q'):  # press q to exit.
                 break
