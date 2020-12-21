@@ -38,6 +38,7 @@ void ClearBuf()
     buf[0] = '\0';
 }
 
+//Bro did you really just pause the video to look at the code? get a life and also it's on github
 void loop()
 {
     if (Serial.available())
