@@ -11,4 +11,11 @@ For any questions you can contact me on [Twitter](https://twitter.com/wendrul)
 
 ### stealing code is my passion
 
-So most of the code is taken from this [repo](https://github.com/kwea123/VTuber_Unity), an open-source vtuber project working with Unity. That is the most interesting part of the code so check it out. 
+So most of the code is taken from this [repo](https://github.com/kwea123/VTuber_Unity), an open-source vtuber project working with Unity. That is the most interesting part of the code so check it out.
+
+Other deep learning projects borrowed (within the Vtuber_Unity project):
+| Project |
+|:---:|----|
+| [head-pose-estimation](https://github.com/yinguobing/head-pose-estimation) |
+| [face-alignment](https://github.com/1adrianb/face-alignment) |
+| [GazeTracking](https://github.com/antoinelame/GazeTracking) | 
